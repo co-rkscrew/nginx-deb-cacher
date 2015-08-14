@@ -1,0 +1,6 @@
+.vagrant
+
+# ignore generated files by setup.sh
+conf/apt
+conf/dnsspoof.etc
+Vagrantfile

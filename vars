@@ -1,0 +1,7 @@
+DEB_CACHE_IP_ADDR="192.168.33.253"
+DEB_CACHE_IP_MASK="192.168.33.0/24"
+
+DEB_CACHE_DEB_MIR=ftp.us.debian.org
+DEB_CACHE_DEB_SMIR=security.debian.org
+DEB_CACHE_UBU_MIR=us.archive.ubuntu.com
+DEB_CACHE_UBU_SMIR=security.ubuntu.com
