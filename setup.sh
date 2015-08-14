@@ -33,9 +33,9 @@ source $1
 # validation
 validate_var "DEB_CACHE_IP_ADDR" $DEB_CACHE_IP_ADDR
 validate_var "DEB_CACHE_IP_MASK" $DEB_CACHE_IP_MASK
-DEB_CACHE_DEB_MIR=`get_or_else $DEB_CACHE_DEB_MIR  ftp.us.debian.org`
+DEB_CACHE_DEB_MIR=`get_or_else $DEB_CACHE_DEB_MIR ftp.us.debian.org`
 DEB_CACHE_DEB_SMIR=`get_or_else $DEB_CACHE_DEB_SMIR security.debian.org`
-DEB_CACHE_UBU_MIR=`get_or_else $DEB_CACHE_UBU_MIR  us.archive.ubuntu.com`
+DEB_CACHE_UBU_MIR=`get_or_else $DEB_CACHE_UBU_MIR us.archive.ubuntu.com`
 DEB_CACHE_UBU_SMIR=`get_or_else $DEB_CACHE_UBU_SMIR security.ubuntu.com`
 
 # generate files
