@@ -24,3 +24,8 @@ DEB_CACHE_UBU_SMIR=security.ubuntu.com
 ```
 
 2) Run `setup.sh vars` to generate configured files. In particular, this will generate the `Vagrantfile` with the configured interface to access the proxy.
+
+# References
+
+- https://yeupou.wordpress.com/2014/01/28/caching-debianetc-apt-repositories-on-your-local-server-with-nginx-and-dsniff/
+- https://yeupou.wordpress.com/2013/11/30/caching-steam-depots-on-your-local-server-with-nginx-and-dsniff/
