@@ -1,26 +1,20 @@
 #!/bin/bash
 
-if [ "$#" -ne 5 ]; then
+if [ "$#" -ne 1 ]; then
   echo "usage: tpl_apt.sh <DEB_CACHE_IP_MASK>"
-  echo "                  <DEB_CACHE_DEB_MIR>"
-  echo "                  <DEB_CACHE_DEB_SMIR>"
-  echo "                  <DEB_CACHE_UBU_MIR>"
-  echo "                  <DEB_CACHE_UBU_SMIR>"
   exit 1
 fi
 
 DEB_CACHE_IP_MASK=$1
 
-DEB_CACHE_DEB_MIR=$2
-DEB_CACHE_DEB_SMIR=$3
-DEB_CACHE_UBU_MIR=$4
-DEB_CACHE_UBU_SMIR=$5
-
 cat <<END
 # apt spoof/proxy
+
+proxy_cache_path /srv/www/cache levels=1 keys_zone=STATIC:10m inactive=30d max_size=12g;
+
 server  {
   listen 80;
-  server_name ${DEB_CACHE_DEB_MIR} ${DEB_CACHE_DEB_SMIR} ${DEB_CACHE_UBU_MIR} ${DEB_CACHE_UBU_SMIR};
+  server_name .debian.org d-i.debian.org;
 
   access_log /var/log/nginx/apt.access.log;
   error_log /var/log/nginx/apt.error.log;
@@ -32,24 +26,56 @@ server  {
   allow 127.0.0.1;
   deny all;
 
-  location /debian/pool/ {
+  # location /debian/pool/ {
+  #   try_files \$uri @mirror;
+  # }
+
+  location /debian/dists/ {
+    access_log /var/log/nginx/apt.dists.log;
+    proxy_pass http://\$host\$request_uri;
+    proxy_redirect off;
+    proxy_set_header Host \$host; proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    client_max_body_size 100m;
+    client_body_buffer_size 1m;
+    proxy_cache STATIC;
+    proxy_temp_path /srv/www/cache/partial;
+    proxy_store_access user:rw group:rw all:r;
+    proxy_cache_valid 30d;
+    # might be interesting to /debian/pool
+    #proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
+  }
+
+  location /debian/ {
     try_files \$uri @mirror;
   }
 
-  # try cache dist later
-  #location /debian/dists/ {
-  #  try_files \$uri @mirror;
-  #}
-
-  location /debian/docs/ {
-    try_files \$uri @mirror;
+  location /debian-security/dists {
+    access_log /var/log/nginx/apt.dists.log;
+    proxy_pass http://\$host\$request_uri;
+    proxy_redirect off;
+    proxy_set_header Host \$host; proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    client_max_body_size 100m;
+    client_body_buffer_size 1m;
+    proxy_cache STATIC;
+    proxy_temp_path /srv/www/cache/partial;
+    proxy_store_access user:rw group:rw all:r;
+    proxy_cache_valid 30d;
+    # might be interesting to /debian-security/pool
+    #proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
   }
 
-  location /debian-security/pool/ {
+  location /debian-security/ {
     try_files \$uri @mirror;
   }
 
   location /ubuntu/pool/ {
+    try_files \$uri @mirror;
+  }
+
+  # http://d-i.debian.org/daily-images/amd64/daily/*
+  location /daily-images/amd64/daily/ {
     try_files \$uri @mirror;
   }
 

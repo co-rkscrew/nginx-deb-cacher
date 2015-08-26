@@ -15,12 +15,12 @@ fi
 
 # create apt folders
 rm -rf /srv
-mkdir -p /srv/www/apt/debian /srv/www/apt/debian-security /srv/www/apt/ubuntu
+mkdir -p /srv/www/apt/debian /srv/www/apt/debian-security /srv/www/apt/ubuntu /srv/www/apt/daily-images /srv/www/cache/partial
 chown www-data:www-data -R /srv/www/apt
-cd /srv/www
-ln -s /srv/www/apt/debian .
-ln -s /srv/www/apt/debian-security .
-ln -s /srv/www/apt/ubuntu .
+ln -sf /srv/www/apt/debian /srv/www
+ln -sf /srv/www/apt/debian-security /srv/www
+ln -sf /srv/www/apt/ubuntu /srv/www
+ln -sf /srv/www/apt/daily-images /srv/www
 
 CONF_DIR="$1"
 CONF_APT="$CONF_DIR/apt"
@@ -35,7 +35,7 @@ validate_file "$CONF_DNSSPOOF_INI"
 
 # configure nginx
 cp $CONF_APT /etc/nginx/sites-available/apt
-ln -s /etc/nginx/sites-available/apt /etc/nginx/sites-enabled/
+ln -sf /etc/nginx/sites-available/apt /etc/nginx/sites-enabled/
 
 cp $CONF_DNSSPOOF_ETC /etc/dnsspoof.conf
 cp $CONF_DNSSPOOF_DEF /etc/default/dnsspoof

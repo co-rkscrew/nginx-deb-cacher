@@ -40,11 +40,7 @@ DEB_CACHE_UBU_SMIR=`get_or_else $DEB_CACHE_UBU_SMIR security.ubuntu.com`
 
 # generate files
 $DIR/templates/tpl_vagrantfile.sh ${DEB_CACHE_IP_ADDR} > $DIR/Vagrantfile
-$DIR/templates/tpl_apt.sh ${DEB_CACHE_IP_MASK} \
-							${DEB_CACHE_DEB_MIR} \
-							${DEB_CACHE_DEB_SMIR} \
-							${DEB_CACHE_UBU_MIR} \
-							${DEB_CACHE_UBU_SMIR} > $DIR/conf/apt
+$DIR/templates/tpl_apt.sh ${DEB_CACHE_IP_MASK} > $DIR/conf/apt
 $DIR/templates/tpl_dnsspoof.sh ${DEB_CACHE_IP_ADDR} \
 							${DEB_CACHE_DEB_MIR} \
 							${DEB_CACHE_DEB_SMIR} \
