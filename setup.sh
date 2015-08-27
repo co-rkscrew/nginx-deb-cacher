@@ -26,6 +26,8 @@ source $1
 validate_var "DEB_CACHE_IP_ADDR" $DEB_CACHE_IP_ADDR
 validate_var "DEB_CACHE_IP_MASK" $DEB_CACHE_IP_MASK
 
+mkdir -p $DIR/conf
+
 # generate files
 $DIR/templates/tpl_vagrantfile.sh ${DEB_CACHE_IP_ADDR} > $DIR/Vagrantfile
 $DIR/templates/tpl_apt.sh ${DEB_CACHE_IP_MASK} > $DIR/conf/apt
